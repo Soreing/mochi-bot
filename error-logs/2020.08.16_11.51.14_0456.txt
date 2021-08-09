@@ -1,0 +1,31 @@
+Error
+    at /home/soreing/bots/bot/index.js:1396:20
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)error: duplicate key value violates unique constraint "user_roles_pkey"
+    at Parser.parseErrorMessage (/home/soreing/bots/bot/node_modules/pg-protocol/dist/parser.js:278:15)
+    at Parser.handlePacket (/home/soreing/bots/bot/node_modules/pg-protocol/dist/parser.js:126:29)
+    at Parser.parse (/home/soreing/bots/bot/node_modules/pg-protocol/dist/parser.js:39:38)
+    at Socket.<anonymous> (/home/soreing/bots/bot/node_modules/pg-protocol/dist/index.js:8:42)
+    at Socket.emit (events.js:314:20)
+    at addChunk (_stream_readable.js:303:12)
+    at readableAddChunk (_stream_readable.js:279:9)
+    at Socket.Readable.push (_stream_readable.js:218:10)
+    at TCP.onStreamRead (internal/stream_base_commons.js:188:23)
+{
+  length:       238,
+  severity:     ERROR,
+  code:         23505,
+  detail:       Key (uid, rid)=(548227744471842826, 597759254165979146) already exists.,
+  hint:         undefined,
+  position:     undefined,
+  intrPosition: undefined,
+  intrQuery:    undefined,
+  where:        undefined,
+  schema:       public,
+  table:        user_roles,
+  column:       undefined,
+  dataType:     undefined,
+  constraint:   user_roles_pkey,
+  file:         nbtinsert.c,
+  line:         570,
+  routine:      _bt_check_unique
+}
