@@ -1454,6 +1454,7 @@ function onMessageUpdate(oldmsg, newmsg)
 
 async function onMemberAdd(mbr)
 {
+	console.log("Membmer was added");
 	if(!ready) return;
 	if(mbr.guild.id != GLD_UNIVERSITY) return;
 		
@@ -1489,9 +1490,9 @@ async function onMemberAdd(mbr)
 		});
 		
 		/* Push user into the local data tables */
-		Users.totalXP.push({uid:mbr.uid, username:mbr.user.username,  nickname:null, g:0, m:0, b:0, a:0});
-		Users.gainedXP.push({uid:mbr.uid, username:mbr.user.username, nickname:null, g:0, m:0, b:0, a:0});
-		Users.gainedXP.push({uid:mbr.uid, username:mbr.user.username, nickname:null, g1:0, m1:0, a1:0, g2:0, m2:0, a2:0, g3:0, m3:0, a3:0});
+		Users.totalXP.push({uid:mbr.id, username:mbr.user.username,  nickname:null, g:0, m:0, b:0, a:0});
+		Users.gainedXP.push({uid:mbr.id, username:mbr.user.username, nickname:null, g:0, m:0, b:0, a:0});
+		Users.seasonXP.push({uid:mbr.id, username:mbr.user.username, nickname:null, g1:0, m1:0, a1:0, g2:0, m2:0, a2:0, g3:0, m3:0, a3:0});
 		
 		var modlogs = mbr.guild.channels.cache.get(CHNL_MODLOGS);
 		modlogs.send(Commons.timeStamp() + " <@" + mbr.user + "> Joined the server");
