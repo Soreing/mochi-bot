@@ -356,7 +356,6 @@ module.exports = {
 		}
 		
 		var idx = ranking.findIndex( e => e.uid == user.id);
-		console.log(idx);
 		
 		var sidx = idx-3;
 		var eidx = idx+3;

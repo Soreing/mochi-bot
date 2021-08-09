@@ -829,15 +829,24 @@ async function fight(msg)
 	}
 	else
 	{
+		// Pick new ranking
+		var uRank = userPet.rank;
+		var eRank = enemyPet.rank;
+		if(uRank > eRank)
+		{	var tmp = uRank;
+			uRank = eRank;
+			eRank = tmp;
+		}
+
 		DB.pool()
 			.query( "UPDATE user_pets " +
 					"SET energy=energy-10 " +
 					"WHERE uid=" + user.id + " AND pid=" + userPet.pid+";\n" +
 					"UPDATE pet_settings " +
-					"SET rank=" + enemyPet.rank + " " +
+					"SET rank=" + uRank + " " +
 					"WHERE uid=" + user.id + ";\n" +
 					"UPDATE pet_settings " +
-					"SET rank=" + userPet.rank + " " +
+					"SET rank=" + eRank + " " +
 					"WHERE uid=" + enemy.id + ";\n")
 			.then(res=> 
 			{	message += "__*" + user.username + " Won!*__\n";
