@@ -28,6 +28,7 @@ const CHNL_MEDIA      = '663119103393005579';
 const CHNL_CONFESSION = '702990047997067324';
 const CHNL_BOTSPAM    = '597927626958700545';
 const CHNL_ANNOUNCE   = '597742410868719616';
+const CHNL_BOOSTS     = '873157230344679475';
 const EMOTE_BANHAMMER = '659834999243145277'; 
 const MSG_MEDIA       = '663129147836596264';
 const SOREING         = '498948020918812677';
@@ -1296,7 +1297,7 @@ async function onMessage(msg)
 	
 	/* Nitro Announcement */
 	if(msg.type == "USER_PREMIUM_GUILD_SUBSCRIPTION")
-	{	var chnl = msg.guild.channels.cache.get(CHNL_ANNOUNCE);
+	{	var chnl = msg.guild.channels.cache.get(CHNL_BOOSTS);
 		chnl.send("<:nitro_img:743039483838070850> **Wow!** <:PogU:597939218442092564> " + msg.author.toString() + " **Just Boosted The Server! <:PagChomp:597946121914155028>**")
 	}
 	
