@@ -1250,8 +1250,8 @@ async function givegem(id, amt)
 
 async function onReady()
 {
-	//await loadResources();
-	//await loadMediaListener();
+	await loadResources();
+	await loadMediaListener();
 
 	lastUpdate=Date.now() + 0;
 	updateID = setInterval(onUpdate, 60000);
