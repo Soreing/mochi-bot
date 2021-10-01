@@ -1396,7 +1396,6 @@ async function onUpdate()
 
 	if(oldDate.getDay() != newDate.getDay())
 	{	await Users.shiftXP();
-		//TODO: reset msg counter or whatever
 	}
 	
 	if(updateTick%3==0)
@@ -1405,8 +1404,8 @@ async function onUpdate()
 	
 	if(updateTick%5==0)
 	{	Users.uploadXP();
-		//TODO: add some way to gauge how much a person has talked so far that day... a msg counter? or some kind of percentage based on how everyone else has been talking?
 		Users.setRanks(client);
+		Users.calculateTalk();
 	}
 	
 	if(updateTick%15==0)

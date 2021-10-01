@@ -11,6 +11,7 @@ const EMOTE_COIN   = "<:coin_img:743056604844392479>";
 const GLD_UNIVERSITY  = '597729466709704715';
 
 var talkativity = {};
+const MAX_TALKATIVITY = 0.75; // <-- change this value to modify max talkativity percentage (range: 0-1, 1 meaning a user that is the only one talking server wide gets literally 0 xp)
 
 /* Checks if the person leveled up */
 function leveled(g, m, b, a, xp)
@@ -398,6 +399,15 @@ module.exports = {
 		}
 
 		/* Divides each user percentage by total XP to get user talkativity percentage */
+		// Division by zero failsafe. Could happen if no user has spoken that day maybe
+		if(xptotal == 0){
+			for(var i=0; i < records.length; i++)
+			{
+				talkativity[records[i].uid] = 0;
+			}
+			return;
+		}
+
 		for(var i=0; i < records.length; i++)
 		{
 			talkativity[records[i].uid] = userXPs[records[i].uid] / xptotal;
@@ -456,6 +466,18 @@ module.exports = {
 		
 		/* Quit if the user is not found */
 		if(sidx==-1) return;
+
+		/* Get user talkativity percentage */
+		var userTalk = talkativity[sidx];
+
+		// This may be redundant but more of a fail safe since im not sure what it will look like for users speaking for the first time that day
+		if(userTalk == null) userTalk = 0;
+
+		// This limits the talkativity percentage so it doesn't go too high to the point where a user gains 0 xp
+		if(userTalk > MAX_TALKATIVITY) userTalk = MAX_TALKATIVITY;
+
+		// Modify amount to factor user talkativity
+		amount = amount - (amount * userTalk);
 		
 		/* Award XP based on category */
 		switch(category)
