@@ -10,6 +10,8 @@ const EMOTE_COIN   = "<:coin_img:743056604844392479>";
 
 const GLD_UNIVERSITY  = '597729466709704715';
 
+var talkativity = {};
+
 /* Checks if the person leveled up */
 function leveled(g, m, b, a, xp)
 {
@@ -374,6 +376,31 @@ module.exports = {
 			case ".allrank"  : ranking(msg); break;
 			case ".rank"     : seasonalRanking(msg); break;
 			case ".work"     : work(msg, module.exports.workTimer); break;
+		}
+	},
+
+	/* Calculate the percentages of how talkative everyone has been */
+	/* Gets called everytime a new msg is detected just like calculateXP */
+	calculateTalk: function()
+	{
+		console.log("calculating talkativity....")
+		
+		var records = module.exports.seasonXP;
+		var userXPs = {};
+		var xptotal = 0;
+
+		/* Gets total sum of all XPs */
+		for(var i=0; i < records.length; i++)
+		{
+			xp = (records[i].g1/2 + records[i].m1 + records[i].a1) + (records[i].g2/2 + records[i].m2 + records[i].a2)/2 + (records[i].g3/2 + records[i].m3 + records[i].a3)/4;
+			userXPs[records[i].uid] = xp;
+			xptotal += xp;
+		}
+
+		/* Divides each user percentage by total XP to get user talkativity percentage */
+		for(var i=0; i < records.length; i++)
+		{
+			talkativity[records[i].uid] = userXPs[records[i].uid] / xptotal;
 		}
 	},
 	

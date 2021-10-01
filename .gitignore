@@ -3,4 +3,5 @@
 
 # Node.JS
 node_modules
+error-logs
 .env
