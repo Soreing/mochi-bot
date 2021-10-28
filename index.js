@@ -1405,6 +1405,7 @@ async function onUpdate()
 	if(updateTick%5==0)
 	{	Users.uploadXP();
 		Users.setRanks(client);
+		Users.calculateTalk();
 	}
 	
 	if(updateTick%15==0)
