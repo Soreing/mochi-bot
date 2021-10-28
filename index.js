@@ -1373,6 +1373,7 @@ async function onMessage(msg)
 			case ".help"    : msg.channel.send(Embeds.infHelp()); break;
 			case ".phelp"   : msg.channel.send(Embeds.infPets()); break;
 			case ".ahelp"   : msg.channel.send(Embeds.infPetActions()); break;
+			case ".force"   : Users.calculateTalk(); break;
 		}
 	}
 }

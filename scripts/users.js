@@ -10,8 +10,14 @@ const EMOTE_COIN   = "<:coin_img:743056604844392479>";
 
 const GLD_UNIVERSITY  = '597729466709704715';
 
+/* Talkativity Variables */
+var xpTotal = 0;
 var talkativity = {};
-const MAX_TALKATIVITY = 0.75; // <-- change this value to modify max talkativity percentage (range: 0-1, 1 meaning a user that is the only one talking server wide gets literally 0 xp)
+
+const XPCurve = (talk) =>{
+	//return -Math.exp(5.4 * talk - 5.7) + 1;
+	return -Math.exp(2.5 * talk - 2.6) + 1.1;
+}
 
 /* Checks if the person leveled up */
 function leveled(g, m, b, a, xp)
@@ -383,35 +389,37 @@ module.exports = {
 	/* Calculate the percentages of how talkative everyone has been */
 	/* Gets called everytime a new msg is detected just like calculateXP */
 	calculateTalk: function()
-	{
-		console.log("calculating talkativity....")
-		
+	{	
 		var records = module.exports.seasonXP;
 		var userXPs = {};
-		var xptotal = 0;
+		var _talkativity = {};
+		
+		xpTotal = 0;
 
 		/* Gets total sum of all XPs */
 		for(var i=0; i < records.length; i++)
 		{
-			xp = (records[i].g1/2 + records[i].m1 + records[i].a1) + (records[i].g2/2 + records[i].m2 + records[i].a2)/2 + (records[i].g3/2 + records[i].m3 + records[i].a3)/4;
+			xp = (records[i].g1/2 + records[i].m1 + records[i].a1);
 			userXPs[records[i].uid] = xp;
-			xptotal += xp;
+			xpTotal += xp;
 		}
 
 		/* Divides each user percentage by total XP to get user talkativity percentage */
 		// Division by zero failsafe. Could happen if no user has spoken that day maybe
-		if(xptotal == 0){
+		if(xpTotal == 0){
 			for(var i=0; i < records.length; i++)
 			{
-				talkativity[records[i].uid] = 0;
+				_talkativity[records[i].uid] = 0;
 			}
 			return;
 		}
 
 		for(var i=0; i < records.length; i++)
 		{
-			talkativity[records[i].uid] = userXPs[records[i].uid] / xptotal;
+			_talkativity[records[i].uid] = userXPs[records[i].uid] / xpTotal;
 		}
+
+		talkativity = _talkativity;
 	},
 	
 	/* Calculates the XP to be awarded based on messages' content */
@@ -468,16 +476,14 @@ module.exports = {
 		if(sidx==-1) return;
 
 		/* Get user talkativity percentage */
-		var userTalk = talkativity[sidx];
+		var userTalk = talkativity[msg.author.id];
 
 		// This may be redundant but more of a fail safe since im not sure what it will look like for users speaking for the first time that day
 		if(userTalk == null) userTalk = 0;
 
-		// This limits the talkativity percentage so it doesn't go too high to the point where a user gains 0 xp
-		if(userTalk > MAX_TALKATIVITY) userTalk = MAX_TALKATIVITY;
-
 		// Modify amount to factor user talkativity
-		amount = amount - (amount * userTalk);
+		if(xpTotal > 500)
+			amount *= XPCurve(userTalk);
 		
 		/* Award XP based on category */
 		switch(category)
