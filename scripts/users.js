@@ -120,6 +120,17 @@ async function profile(msg)
 		const avatar = createCanvas(256, 256)
 		const actx = avatar.getContext('2d');
 		
+		// Background image missing locally quickfix
+		if(record.background !== null){
+			if(!fs.existsSync('images/backgrounds/'+record.uid+'.png')){
+				const bg_save = createCanvas(800, 400);
+				const bctx = bg_save.getContext('2d');
+				var bgtemp = await Commons.loadImage(record.background);
+				bctx.drawImage(bgtemp, 0,0, 800, 400);
+				await Commons.saveImage(bg_save.createPNGStream(), 'images/backgrounds/'+record.uid+'.png');
+			}
+		}
+		// Background image missing locally quickfix
 		
 		var ava = await Commons.loadImage(user.displayAvatarURL());
 		actx.drawImage(ava, 0,0, 256, 256);
